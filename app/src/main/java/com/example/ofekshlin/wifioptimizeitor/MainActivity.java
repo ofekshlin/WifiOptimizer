@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WifiManager wifiController;
     private TextView mTvWifiAvailable;
+    private TextView  mDebag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mTvWifiAvailable = findViewById(R.id.tv_wifi_available);
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        mDebag = findViewById(R.id.debag);
         Button mChangeWifiButton = findViewById(R.id.change_wifi_button);
         showAllWifisAvailable();
         mChangeWifiButton.setOnClickListener(new View.OnClickListener(){
@@ -48,12 +50,17 @@ public class MainActivity extends AppCompatActivity {
                 currntWifiLevel = net.level;
             }
         }
-        for(ScanResult net : wifisAvailable){
+        mDebag.append("" + currntWifiLevel + "\n");
+        for(ScanResult net : wifisAvailable)
+        {
+            mDebag.append("" + net.level + "\n");
             if(net.level > currntWifiLevel){
+                mDebag.append(net.SSID);
                 bestWifi = net.SSID;
             }
         }
-        if (wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true)){
+        Boolean moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
+        if (moveAction){
             Toast succeeded = Toast.makeText(getApplicationContext()
                     ,"Succeeded!", Toast.LENGTH_SHORT);
             succeeded.show();
