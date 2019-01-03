@@ -31,6 +31,19 @@ public class MainActivity extends AppCompatActivity {
                 moveToBetterWifi();
             }
         });
+        Button mFuckme = findViewById(R.id.change_button);
+        mChangeWifiButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                moveWifi();
+            }
+        });
+
+    }
+
+    private  void moveWifi(){
+        List<ScanResult> wifisAvailable = wifiController.getScanResults();
+
+
     }
 
     private void showAllWifisAvailable(){
@@ -43,19 +56,23 @@ public class MainActivity extends AppCompatActivity {
     private void moveToBetterWifi(){
         List<ScanResult> wifisAvailable = wifiController.getScanResults();
         String bestWifi = "";
-        int currntWifiLevel = 0;
         String currntWifi = wifiController.getConnectionInfo().getSSID();
+        int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
+        mDebag.append("cwn: " + currntWifi + " cwl: " + currntWifiLevel + " \n");
+        // code that doesn't requier
+        /*
         for(ScanResult net : wifisAvailable){
             if(net.SSID.equals(currntWifi)){
+                mDebag.append("cw=" + net.SSID + "L: " + net.level + "\n");
                 currntWifiLevel = net.level;
             }
         }
-        mDebag.append("" + currntWifiLevel + "\n");
+        */
         for(ScanResult net : wifisAvailable)
         {
-            mDebag.append("" + net.level + "\n");
             if(net.level > currntWifiLevel){
-                mDebag.append(net.SSID);
+                mDebag.append("nw: " + net.level + "\n");
+                mDebag.append("nwn: " + net.SSID + "\n");
                 bestWifi = net.SSID;
             }
         }
