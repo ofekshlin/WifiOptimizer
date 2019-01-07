@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private void showAllWifisAvailable(){
         List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
         for(WifiConfiguration net : wifisAvailable){
-            mTvWifiAvailable.append(net.SSID + "\n\n\n");
+            mTvWifiAvailable.append("\n" + net.SSID + "\n");
         }
     }
 
@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
                 currntWifiLevel = net.level;
             }
         }
-        mDebag.append("" + currntWifiLevel + "\n");
+        mDebag.append("cwl:" + currntWifiLevel + "\n");
         for(ScanResult net : wifisAvailable)
         {
-            mDebag.append("" + net.level + "\n");
+            mDebag.append("nw: " + net.SSID + " nwl: " + net.level + "\n");
             if(net.level > currntWifiLevel){
-                mDebag.append(net.SSID);
+                mDebag.append(" got in the if \n nw: " + net.SSID + " nwl: " + net.level + "\n");
                 bestWifi = net.SSID;
             }
         }
