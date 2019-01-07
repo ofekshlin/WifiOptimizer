@@ -24,13 +24,30 @@ public class MainActivity extends AppCompatActivity {
         mTvWifiAvailable = findViewById(R.id.tv_wifi_available);
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mDebag = findViewById(R.id.debag);
+        Button mOptimizeButton = findViewById(R.id.optimize_button);
         Button mChangeWifiButton = findViewById(R.id.change_wifi_button);
         showAllWifisAvailable();
-        mChangeWifiButton.setOnClickListener(new View.OnClickListener(){
+        mOptimizeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 moveToBetterWifi();
             }
         });
+        mChangeWifiButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                moveToAnotherWifi();
+            }
+        });
+
+    }
+
+
+    private void moveToAnotherWifi(){
+        String thisWifi = wifiController.getConnectionInfo().getSSID();
+        for(ScanResult net : wifiController.getScanResults()){
+            if(!net.SSID.equals(thisWifi)){
+                wifiController.enableNetwork(getWifiIdBySSID(net.SSID), true);
+            }
+        }
     }
 
     private void showAllWifisAvailable(){

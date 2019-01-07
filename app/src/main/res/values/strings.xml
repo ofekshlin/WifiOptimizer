@@ -3,4 +3,5 @@
     <string name="optimize">Optimize</string>
     <string name="configured">Configured</string>
     <string name="debag">Debag</string>
+    <string name="change_wifi">Change Wifi</string>
 </resources>
