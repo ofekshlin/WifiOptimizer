@@ -45,12 +45,14 @@ public class MainActivity extends AppCompatActivity {
         String thisWifi = wifiController.getConnectionInfo().getSSID();
         for(ScanResult net : wifiController.getScanResults()){
             if(!net.SSID.equals(thisWifi)){
+                mDebag.append("\n NWN: " + net.SSID + " the pwn: " + thisWifi);
                 wifiController.enableNetwork(getWifiIdBySSID(net.SSID), true);
             }
         }
     }
 
     private void showAllWifisAvailable(){
+        mTvWifiAvailable.append("\n");
         List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
         for(WifiConfiguration net : wifisAvailable){
             mTvWifiAvailable.append("\n" + net.SSID + "\n");
@@ -60,13 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private void moveToBetterWifi(){
         List<ScanResult> wifisAvailable = wifiController.getScanResults();
         String bestWifi = "";
-        int currntWifiLevel = 0;
-        String currntWifi = wifiController.getConnectionInfo().getSSID();
-        for(ScanResult net : wifisAvailable){
-            if(net.SSID.equals(currntWifi)){
-                currntWifiLevel = net.level;
-            }
-        }
+        int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
         mDebag.append("cwl:" + currntWifiLevel + "\n");
         for(ScanResult net : wifisAvailable)
         {
