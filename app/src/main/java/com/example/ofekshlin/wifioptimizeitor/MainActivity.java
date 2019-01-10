@@ -25,30 +25,13 @@ public class MainActivity extends AppCompatActivity {
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         mDebag = findViewById(R.id.debag);
         Button mOptimizeButton = findViewById(R.id.optimize_button);
-        Button mChangeWifiButton = findViewById(R.id.change_wifi_button);
         showAllWifisAvailable();
         mOptimizeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 moveToBetterWifi();
             }
         });
-        mChangeWifiButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                moveToAnotherWifi();
-            }
-        });
 
-    }
-
-
-    private void moveToAnotherWifi(){
-        String thisWifi = wifiController.getConnectionInfo().getSSID();
-        for(ScanResult net : wifiController.getScanResults()){
-            if(!net.SSID.equals(thisWifi)){
-                mDebag.append("\n NWN: " + net.SSID + " the pwn: " + thisWifi);
-                wifiController.enableNetwork(getWifiIdBySSID(net.SSID), true);
-            }
-        }
     }
 
     private void showAllWifisAvailable(){
@@ -60,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void moveToBetterWifi(){
+        mDebag.setText("Debag + \n");
         List<ScanResult> wifisAvailable = wifiController.getScanResults();
         String bestWifi = "";
         int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
@@ -69,9 +53,11 @@ public class MainActivity extends AppCompatActivity {
             mDebag.append("nw: " + net.SSID + " nwl: " + net.level + "\n");
             if(net.level > currntWifiLevel){
                 mDebag.append(" got in the if \n nw: " + net.SSID + " nwl: " + net.level + "\n");
+                currntWifiLevel = net.level;
                 bestWifi = net.SSID;
             }
         }
+        mDebag.append("the bestWifi is: " + bestWifi);
         Boolean moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
         if (moveAction){
             Toast succeeded = Toast.makeText(getApplicationContext()
