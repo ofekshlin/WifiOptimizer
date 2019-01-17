@@ -1,63 +1,50 @@
 package com.example.ofekshlin.wifioptimizeitor;
 
+import android.app.IntentService;
 import android.content.Context;
+import android.content.Intent;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.net.wifi.*;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.net.wifi.WifiManager;
+import android.os.SystemClock;
 import android.widget.Toast;
+
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+
+public class OptimizationService extends IntentService {
 
     private WifiManager wifiController;
-    private TextView mTvWifiAvailable;
-    private TextView  mDebag;
+    private long timeToWait;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        mTvWifiAvailable = findViewById(R.id.tv_wifi_available);
-        wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        mDebag = findViewById(R.id.debag);
-        Button mOptimizeButton = findViewById(R.id.optimize_button);
-        showAllWifisAvailable();
-        mOptimizeButton.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                moveToBetterWifi();
-            }
-        });
-
+    public OptimizationService(){
+        super("OptimizeService");
     }
 
-    private void showAllWifisAvailable(){
-        mTvWifiAvailable.append("\n");
-        List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
-        for(WifiConfiguration net : wifisAvailable){
-            mTvWifiAvailable.append("\n" + net.SSID + "\n");
-        }
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        timeToWait = 6000;
+    }
+
+    @Override
+    protected void onHandleIntent(Intent intent) {
+        moveToBetterWifi();
+        SystemClock.sleep(timeToWait);
     }
 
     private void moveToBetterWifi(){
-        mDebag.setText("Debag \n");
         List<ScanResult> wifisAvailable = wifiController.getScanResults();
         String bestWifi = "";
         int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
-        mDebag.append("cwl:" + currntWifiLevel + "\n");
         for(ScanResult net : wifisAvailable)
         {
-            mDebag.append("nw: " + net.SSID + " nwl: " + net.level + "\n");
             if(net.level > currntWifiLevel){
-                mDebag.append(" got in the if \n nw: " + net.SSID + " nwl: " + net.level + "\n");
                 currntWifiLevel = net.level;
                 bestWifi = net.SSID;
             }
         }
-        mDebag.append("the bestWifi is: " + bestWifi);
         Boolean moveAction = false;
         if (bestWifi != null) {
             moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
