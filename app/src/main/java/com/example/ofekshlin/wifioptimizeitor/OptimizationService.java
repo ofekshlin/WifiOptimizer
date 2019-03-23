@@ -17,6 +17,7 @@ public class OptimizationService extends IntentService {
     private WifiManager wifiController;
     private long timeToWait;
 
+
     public OptimizationService(){
         super("OptimizeService");
     }
@@ -28,8 +29,14 @@ public class OptimizationService extends IntentService {
         timeToWait = 6000;
     }
 
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+        return super.onStartCommand(intent,flags,startId);
+    }
+
     @Override
     protected void onHandleIntent(Intent intent) {
+        Toast.makeText(getApplicationContext(), "Run Time!!", Toast.LENGTH_SHORT).show();
         moveToBetterWifi();
         SystemClock.sleep(timeToWait);
     }
@@ -50,14 +57,12 @@ public class OptimizationService extends IntentService {
             moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
         }
         if (moveAction){
-            Toast succeeded = Toast.makeText(getApplicationContext()
-                    ,"Succeeded!", Toast.LENGTH_SHORT);
-            succeeded.show();
+            Toast.makeText(getApplicationContext()
+                    ,"Succeeded!", Toast.LENGTH_SHORT).show();
         }
         else{
-            Toast faild = Toast.makeText(getApplicationContext()
-                    ,"Try again!", Toast.LENGTH_SHORT);
-            faild.show();
+            Toast.makeText(getApplicationContext()
+                    ,"Try again!", Toast.LENGTH_SHORT).show();
         }
     }
 

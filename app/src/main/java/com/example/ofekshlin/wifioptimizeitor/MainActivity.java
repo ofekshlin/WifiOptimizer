@@ -9,13 +9,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.security.AccessController;
 import java.util.List;
+import android.content.Intent;
+import android.app.IntentService;
+
+import static java.security.AccessController.getContext;
 
 public class MainActivity extends AppCompatActivity {
 
     private WifiManager wifiController;
     private TextView mTvWifiAvailable;
     private TextView  mDebag;
+    private static final int OPTIMIZE_JOB_ID = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
         mDebag = findViewById(R.id.debag);
         Button mOptimizeButton = findViewById(R.id.optimize_button);
         showAllWifisAvailable();
+
+        // call the main intent service to run
+        Intent mOptimizationService = new Intent();
+        //OptimizationService.enqueueWork(getContext(), OptimizationService.class, OPTIMIZE_JOB_ID, mOptimizationService);
+
+        //make the optimization button work
         mOptimizeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 moveToBetterWifi();
