@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
     private AvailableWifiNetworks mAdapter;
     private RecyclerView mWifiList;
 
+    public static List<WifiConfiguration> cofiguredWifis;
+
     private Switch optimizeSwitch;
 
     @Override
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+        //set the configurdWifis var
+        cofiguredWifis = wifiController.getConfiguredNetworks();
 
         //Handle the RecyclerView
         mWifiList = findViewById(R.id.available_networks);
@@ -58,10 +63,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
+        optimizeSwitch = (Switch) findViewById(R.id.optimize_switch);
         return true;
     }
-
-
 
 
     /*
@@ -96,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private int getWifiIdBySSID(String s){
+    public int getWifiIdBySSID(String s){
         List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
         for(WifiConfiguration net : wifisAvailable){
             if(s.equals(net.SSID)){
@@ -105,4 +109,5 @@ public class MainActivity extends AppCompatActivity {
         }
         return 0;
     }
+
 }
