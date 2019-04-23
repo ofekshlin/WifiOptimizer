@@ -67,7 +67,7 @@ public class WifiNetwork {
         return null;
     }
 
-    private void defineSignalLevelByRSSI(){
+    public void defineSignalLevelByRSSI(){
         int level = WifiManager.calculateSignalLevel(this.RSSI, 5);
         switch(level){
             case 0:

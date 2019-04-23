@@ -1,6 +1,8 @@
 package com.example.ofekshlin.wifioptimizeitor;
 
 import android.content.Context;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,14 +12,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.net.wifi.WifiConfiguration;
 
+import java.util.List;
+
 public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNetworks.WifiViewHolder> {
 
-    private String[] availableWifis;
+    private WifiManager mWifiController;
+    private List<ScanResult> availableWifis;
 
 
-    public AvailableWifiNetworks(){ availableWifis = null; }
-    public AvailableWifiNetworks(String[] myDataset) {
-        availableWifis = myDataset;
+    public AvailableWifiNetworks(WifiManager wifiController) {
+        mWifiController = wifiController;
+        availableWifis = mWifiController.getScanResults();
     }
 
 
@@ -33,8 +38,9 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
             wifiLevel = (ImageView) itemView.findViewById(R.id.wifi_level_tv);
         }
 
-        public void bind(String s){
-            ssid.setText(s);
+        public void bind(ScanResult sr){
+
+            ssid.setText(sr.SSID);
         }
 
     }
@@ -43,7 +49,6 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
     @NonNull
     @Override
     public WifiViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-
         Context context = viewGroup.getContext();
         int layoutIdForListItem = R.layout.list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -57,11 +62,36 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
 
     @Override
     public void onBindViewHolder(@NonNull WifiViewHolder wifiViewHolder, int i) {
-        wifiViewHolder.bind(String.valueOf(i));
+        wifiViewHolder.bind(availableWifis.get(i));
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return availableWifis.size();
     }
+
+
+    public static SignalLevel defineSignalLevelByRSSI(int rssi){
+        int level = WifiManager.calculateSignalLevel(rssi, 5);
+        SignalLevel signalLevel = null;
+        switch(level){
+            case 0:
+                signalLevel = SignalLevel.VeryLow;
+                break;
+            case 1:
+                signalLevel = SignalLevel.Low;
+                break;
+            case 2:
+                signalLevel = SignalLevel.Medium;
+                break;
+            case 3:
+                signalLevel = SignalLevel.High;
+                break;
+            case 4:
+                signalLevel = SignalLevel.VeryHigh;
+                break;
+        }
+        return signalLevel;
+    }
+
 }

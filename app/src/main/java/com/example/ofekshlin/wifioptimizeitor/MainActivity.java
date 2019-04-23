@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         mWifiList.setHasFixedSize(true);
 
-        mAdapter = new AvailableWifiNetworks();
+        mAdapter = new AvailableWifiNetworks(wifiController);
         mWifiList.setAdapter(mAdapter);
 
     }
