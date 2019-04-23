@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +42,22 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
         public void bind(ScanResult sr){
 
             ssid.setText(sr.SSID);
+            switch(defineSignalLevelByRSSI(sr.level)){
+                case VeryHigh:
+                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_4_bar_black_24dp);
+                    break;
+                case High:
+                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_3_bar_black_24dp);
+                    break;
+                case Medium:
+                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_2_bar_black_24dp);
+                    break;
+                case Low:
+                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_1_bar_black_24dp);
+                    break;
+                case VeryLow:
+                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_0_bar_black_24dp);
+            }
         }
 
     }
