@@ -1,6 +1,7 @@
 package com.example.ofekshlin.wifioptimizeitor;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiConfiguration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 
     private Switch optimizeSwitch;
 
+    private Intent mOptimizationService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,19 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = new AvailableWifiNetworks(wifiController);
         mWifiList.setAdapter(mAdapter);
 
+        //start the optimization service
+        mOptimizationService = new Intent(MainActivity.this, OptimizationService.class);
+        startService(mOptimizationService);
+
+        //handle the optimize now button
+        Button optimizeButton = findViewById(R.id.optimize_button);
+        optimizeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                moveToBetterWifi();
+            }
+        });
+
     }
 
 
@@ -63,10 +79,19 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        optimizeSwitch = (Switch) findViewById(R.id.optimize_switch);
+        //handle the optimize switch
+        optimizeSwitch = menu.findItem(R.id.optimize_switch_place).getActionView().findViewById(R.id.optimize_switch);
+        optimizeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    OptimizationService.shouldContinue = true;
+                } else {
+                    OptimizationService.shouldContinue = false;
+                }
+            }
+        });
         return true;
     }
-
 
     /*
     A section for the methods of the bottun optimize now (it is an old vertion of the action of the

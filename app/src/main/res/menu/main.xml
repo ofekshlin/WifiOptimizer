@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/optimize_switch"
+        android:id="@+id/optimize_switch_place"
         android:orderInCategory="1"
         android:title="@string/switchStr"
         app:actionLayout="@layout/switch_item"

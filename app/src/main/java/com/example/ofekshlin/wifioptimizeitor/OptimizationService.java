@@ -7,6 +7,7 @@ import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.SystemClock;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -16,7 +17,9 @@ public class OptimizationService extends IntentService {
 
     private WifiManager wifiController;
     private long timeToWait;
+    public static volatile boolean shouldContinue = false;
 
+    private static final String TAG = "MyActivity";
     public OptimizationService(){
         super("OptimizeService");
     }
@@ -25,13 +28,21 @@ public class OptimizationService extends IntentService {
     public void onCreate() {
         super.onCreate();
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        timeToWait = 6000;
+        timeToWait = 3000;
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        moveToBetterWifi();
-        SystemClock.sleep(timeToWait);
+        while(true) {
+            startOptimize();
+        }
+    }
+
+    private void startOptimize(){
+        if(shouldContinue){
+            moveToBetterWifi();
+            SystemClock.sleep(timeToWait);
+        }
     }
 
     private void moveToBetterWifi(){

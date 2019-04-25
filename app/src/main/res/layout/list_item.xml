@@ -4,8 +4,8 @@
     android:layout_height="60dp"
     android:padding="10dp"
     android:orientation="horizontal"
-    android:background="@color/lightPrimary"
-    android:layout_margin="2dp">
+    android:layout_margin="2dp"
+    android:background="@color/lightPrimary">
 
     <ImageView
         android:id="@+id/wifi_level_tv"
