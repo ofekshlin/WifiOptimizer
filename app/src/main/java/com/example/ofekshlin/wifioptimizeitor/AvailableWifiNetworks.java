@@ -41,26 +41,12 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
         }
 
         public void bind(ScanResult sr){
-
             ssid.setText(sr.SSID);
-            switch(sr.level){
-                case 4:
-                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_4_bar_black_24dp);
-                    break;
-                case 3:
-                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_3_bar_black_24dp);
-                    break;
-                case 2:
-                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_2_bar_black_24dp);
-                    break;
-                case 1:
-                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_1_bar_black_24dp);
-                    break;
-                case 0:
-                    wifiLevel.setImageResource(R.drawable.ic_signal_wifi_0_bar_black_24dp);
+            int level = WifiManager.calculateSignalLevel(sr.level, 5);
+            if (WifiLevelToIcon.levelToIcon.containsKey(level)) {
+                wifiLevel.setImageResource(WifiLevelToIcon.levelToIcon.get(level));
             }
         }
-
     }
 
 
