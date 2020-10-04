@@ -22,7 +22,7 @@ public class WifiNetwork {
         RSSI = scanResult.level;
         defineSignalLevelByRSSI();
         relatedScanResult = scanResult;
-        relatedWifiConfiguration = getWifiBySSID(SSID, MainActivity.cofiguredWifis);
+        relatedWifiConfiguration = getWifiBySSID(SSID, MainActivity.configuredWifis);
         if(relatedWifiConfiguration != null){
             isConfigured = true;
         }

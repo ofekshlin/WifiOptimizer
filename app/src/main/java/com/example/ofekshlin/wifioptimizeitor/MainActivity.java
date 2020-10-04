@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.net.wifi.*;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private AvailableWifiNetworks mAdapter;
     private RecyclerView mWifiList;
 
-    public static List<WifiConfiguration> cofiguredWifis;
+    public static List<WifiConfiguration> configuredWifis;
 
     private Switch optimizeSwitch;
 
@@ -36,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-
         //set the configurdWifis var
-        cofiguredWifis = wifiController.getConfiguredNetworks();
+        configuredWifis = wifiController.getConfiguredNetworks();
+        Log.d("-----------------", String.valueOf(configuredWifis.size()));
+
 
         //Handle the RecyclerView
         mWifiList = findViewById(R.id.available_networks);
@@ -50,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 
         mAdapter = new AvailableWifiNetworks(wifiController);
         mWifiList.setAdapter(mAdapter);
-
     }
 
 
