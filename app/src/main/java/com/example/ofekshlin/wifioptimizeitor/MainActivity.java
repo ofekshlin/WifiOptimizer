@@ -1,7 +1,12 @@
 package com.example.ofekshlin.wifioptimizeitor;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.net.wifi.WifiConfiguration;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.net.wifi.*;
@@ -37,10 +42,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        //set the configurdWifis var
-        configuredWifis = wifiController.getConfiguredNetworks();
-        Log.d("-----------------", String.valueOf(configuredWifis.size()));
 
+        askForGPSPermission();
+        turnOnGPS();
+
+        //set the configurdWifis var
+        if (!wifiController.isWifiEnabled()) {
+            wifiController.setWifiEnabled(true);
+        }
+
+        //configuredWifis = wifiController.getConfiguredNetworks();
 
         //Handle the RecyclerView
         mWifiList = findViewById(R.id.available_networks);
@@ -111,4 +122,22 @@ public class MainActivity extends AppCompatActivity {
         return 0;
     }
 
+
+    private void turnOnGPS() {
+        final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
+
+        if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+        }
+    }
+
+    private void askForGPSPermission() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+        {
+            if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 87);
+            }
+        }
+    }
 }

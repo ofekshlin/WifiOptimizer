@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Android-WifiOptimizer.iml" filepath="$PROJECT_DIR$/.idea/modules/Android-WifiOptimizer.iml" group="WifiOptimizer" />
       <module fileurl="file://$PROJECT_DIR$/WifiOptimizer.iml" filepath="$PROJECT_DIR$/WifiOptimizer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/WifiOptimizer-app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/WifiOptimizer-app.iml" group="WifiOptimizer/app" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
