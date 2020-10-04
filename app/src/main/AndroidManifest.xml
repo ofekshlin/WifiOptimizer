@@ -26,7 +26,6 @@
             android:name=".OptimizationService"
             android:exported="false">
         </service>
-        <service android:name=".WifiDataService"></service>
     </application>
 
 </manifest>

@@ -5,24 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.net.wifi.*;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import java.util.List;
 
@@ -50,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         if (!wifiController.isWifiEnabled()) {
             wifiController.setWifiEnabled(true);
         }
-
-        //configuredWifis = wifiController.getConfiguredNetworks();
 
         //Handle the RecyclerView
         mWifiList = findViewById(R.id.available_networks);
