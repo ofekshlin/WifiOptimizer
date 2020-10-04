@@ -4,12 +4,15 @@ import android.content.Context;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.net.wifi.WifiConfiguration;
 
 import java.util.List;
 
@@ -40,20 +43,20 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
         public void bind(ScanResult sr){
 
             ssid.setText(sr.SSID);
-            switch(defineSignalLevelByRSSI(sr.level)){
-                case VeryHigh:
+            switch(sr.level){
+                case 4:
                     wifiLevel.setImageResource(R.drawable.ic_signal_wifi_4_bar_black_24dp);
                     break;
-                case High:
+                case 3:
                     wifiLevel.setImageResource(R.drawable.ic_signal_wifi_3_bar_black_24dp);
                     break;
-                case Medium:
+                case 2:
                     wifiLevel.setImageResource(R.drawable.ic_signal_wifi_2_bar_black_24dp);
                     break;
-                case Low:
+                case 1:
                     wifiLevel.setImageResource(R.drawable.ic_signal_wifi_1_bar_black_24dp);
                     break;
-                case VeryLow:
+                case 0:
                     wifiLevel.setImageResource(R.drawable.ic_signal_wifi_0_bar_black_24dp);
             }
         }
@@ -84,29 +87,4 @@ public class AvailableWifiNetworks extends RecyclerView.Adapter<AvailableWifiNet
     public int getItemCount() {
         return availableWifis.size();
     }
-
-
-    public static SignalLevel defineSignalLevelByRSSI(int rssi){
-        int level = WifiManager.calculateSignalLevel(rssi, 5);
-        SignalLevel signalLevel = null;
-        switch(level){
-            case 0:
-                signalLevel = SignalLevel.VeryLow;
-                break;
-            case 1:
-                signalLevel = SignalLevel.Low;
-                break;
-            case 2:
-                signalLevel = SignalLevel.Medium;
-                break;
-            case 3:
-                signalLevel = SignalLevel.High;
-                break;
-            case 4:
-                signalLevel = SignalLevel.VeryHigh;
-                break;
-        }
-        return signalLevel;
-    }
-
 }
