@@ -65,7 +65,15 @@ public class MainActivity extends AppCompatActivity {
         optimizeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                if (checked && !isMyServiceRunning(OptimizationService.class)) {
+                    // Start service
+                    startService(new Intent(MainActivity.this, OptimizationService.class));
+                }
 
+                else {
+                    // Stop service
+                    stopService(new Intent(MainActivity.this, OptimizationService.class));
+                }
             }
         });
         return true;
