@@ -61,7 +61,7 @@ public class OptimizationService extends Service {
         int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
         for(ScanResult net : wifisAvailable)
         {
-            if(net.level > currntWifiLevel){
+            if(net.level > currntWifiLevel && networkInConfiguredNetworks(net.SSID)){
                 currntWifiLevel = net.level;
                 bestWifi = net.SSID;
             }
@@ -73,13 +73,23 @@ public class OptimizationService extends Service {
 
     }
 
-    private int getWifiIdBySSID(String s){
+    private int getWifiIdBySSID(String ssid){
         List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
         for(WifiConfiguration net : wifisAvailable){
-            if(s.equals(net.SSID)){
+            if(ssid.equals(net.SSID)){
                 return net.networkId;
             }
         }
         return 0;
+    }
+
+    private boolean networkInConfiguredNetworks(String ssid) {
+        List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
+        for(WifiConfiguration net : wifisAvailable){
+            if(ssid.equals(net.SSID)){
+                return true;
+            }
+        }
+        return false;
     }
 }
