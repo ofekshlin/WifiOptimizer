@@ -26,8 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private AvailableWifiNetworks mAdapter;
     private RecyclerView mWifiList;
 
-    public static List<WifiConfiguration> configuredWifis;
-
     private Switch optimizeSwitch;
 
     @Override
@@ -69,51 +67,6 @@ public class MainActivity extends AppCompatActivity {
         optimizeSwitch = (Switch) findViewById(R.id.optimize_switch);
         return true;
     }
-
-
-    /*
-    A section for the methods of the bottun optimize now (it is an old vertion of the action of the
-    optimizition service
-     */
-
-    private void moveToBetterWifi(){
-        List<ScanResult> wifisAvailable = wifiController.getScanResults();
-        String bestWifi = "";
-        int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
-        for(ScanResult net : wifisAvailable)
-        {
-            if(net.level > currntWifiLevel){
-                currntWifiLevel = net.level;
-                bestWifi = net.SSID;
-            }
-        }
-
-        boolean moveAction = false;
-        if (bestWifi != null) {
-            moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
-        }
-        if (moveAction){
-            Toast succeeded = Toast.makeText(getApplicationContext()
-                    ,"Succeeded!", Toast.LENGTH_SHORT);
-            succeeded.show();
-        }
-        else{
-            Toast faild = Toast.makeText(getApplicationContext()
-                    ,"Try again!", Toast.LENGTH_SHORT);
-            faild.show();
-        }
-    }
-
-    public int getWifiIdBySSID(String s){
-        List<WifiConfiguration> wifisAvailable = wifiController.getConfiguredNetworks();
-        for(WifiConfiguration net : wifisAvailable){
-            if(s.equals(net.SSID)){
-                return net.networkId;
-            }
-        }
-        return 0;
-    }
-
 
     private void turnOnGPS() {
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
