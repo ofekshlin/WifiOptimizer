@@ -10,6 +10,7 @@ import android.net.wifi.WifiManager;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.List;
@@ -56,7 +57,7 @@ public class OptimizationService extends Service {
 
     private void moveToBetterWifi(){
         List<ScanResult> wifisAvailable = wifiController.getScanResults();
-        String bestWifi = "";
+        String bestWifi = null;
         int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
         for(ScanResult net : wifisAvailable)
         {

@@ -6,5 +6,5 @@
     <string name="change_wifi">Change Wifi</string>
     <string name="switchStr">Switch</string>
 
-    <string name="WifiCheckInterval">6000</string>
+    <string name="WifiCheckInterval">15000</string>
 </resources>
