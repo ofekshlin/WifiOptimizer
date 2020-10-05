@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
-        optimizeSwitch = (Switch) findViewById(R.id.optimize_switch);
+        optimizeSwitch = menu.findItem(R.id.optimize_switch_place).getActionView().findViewById(R.id.optimize_switch);
         optimizeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
