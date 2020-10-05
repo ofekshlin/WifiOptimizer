@@ -87,7 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 bestWifi = net.SSID;
             }
         }
-        Boolean moveAction = false;
+
+        boolean moveAction = false;
         if (bestWifi != null) {
             moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
         }

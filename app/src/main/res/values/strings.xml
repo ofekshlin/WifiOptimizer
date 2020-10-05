@@ -5,4 +5,6 @@
     <string name="debag">Debag</string>
     <string name="change_wifi">Change Wifi</string>
     <string name="switchStr">Switch</string>
+
+    <string name="WifiCheckInterval">6000</string>
 </resources>

@@ -25,7 +25,7 @@ public class OptimizationService extends IntentService {
     public void onCreate() {
         super.onCreate();
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
-        timeToWait = 6000;
+        timeToWait = Integer.parseInt(this.getResources().getString(R.string.WifiCheckInterval));
     }
 
     @Override
@@ -45,16 +45,19 @@ public class OptimizationService extends IntentService {
                 bestWifi = net.SSID;
             }
         }
-        Boolean moveAction = false;
+
+        boolean moveAction = false;
         if (bestWifi != null) {
             moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
         }
+
         if (moveAction){
             Toast succeeded = Toast.makeText(getApplicationContext()
                     ,"Succeeded!", Toast.LENGTH_SHORT);
             succeeded.show();
         }
-        else{
+
+        else {
             Toast faild = Toast.makeText(getApplicationContext()
                     ,"Try again!", Toast.LENGTH_SHORT);
             faild.show();
