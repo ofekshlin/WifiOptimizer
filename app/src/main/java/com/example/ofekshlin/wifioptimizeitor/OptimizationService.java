@@ -50,7 +50,7 @@ public class OptimizationService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();\
+        Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
         timer.cancel();
     }
 
@@ -66,22 +66,10 @@ public class OptimizationService extends Service {
             }
         }
 
-        boolean moveAction = false;
         if (bestWifi != null) {
-            moveAction = wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
+            wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
         }
 
-        if (moveAction){
-            Toast succeeded = Toast.makeText(getApplicationContext()
-                    ,"Succeeded!", Toast.LENGTH_SHORT);
-            succeeded.show();
-        }
-
-        else {
-            Toast faild = Toast.makeText(getApplicationContext()
-                    ,"Try again!", Toast.LENGTH_SHORT);
-            faild.show();
-        }
     }
 
     private int getWifiIdBySSID(String s){
