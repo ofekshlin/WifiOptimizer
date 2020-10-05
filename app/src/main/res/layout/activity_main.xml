@@ -29,6 +29,7 @@
         android:background="@color/colorAccent"
         android:text="@string/optimize_now"
         android:textSize="25sp"
+        android:padding="10dp"
         android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
