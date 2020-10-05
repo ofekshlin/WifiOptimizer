@@ -62,10 +62,11 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         optimizeSwitch = menu.findItem(R.id.optimize_switch_place).getActionView().findViewById(R.id.optimize_switch);
+        optimizeSwitch.setChecked(isMyServiceRunning(OptimizationService.class));
         optimizeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
-                if (checked && !isMyServiceRunning(OptimizationService.class)) {
+                if (checked) {
                     // Start service
                     startService(new Intent(MainActivity.this, OptimizationService.class));
                 }
