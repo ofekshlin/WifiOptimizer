@@ -13,12 +13,15 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class OptimizationService extends Service {
 
     private WifiManager wifiController;
     private long timeToWait;
+    private Timer timer;
 
     @Nullable
     @Override
@@ -29,6 +32,7 @@ public class OptimizationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        timer = new Timer();
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         timeToWait = Integer.parseInt(this.getResources().getString(R.string.WifiCheckInterval));
     }
@@ -36,13 +40,18 @@ public class OptimizationService extends Service {
     @Override
     public void onStart(Intent intent, int startid) {
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
-        moveToBetterWifi();
-        SystemClock.sleep(timeToWait);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                moveToBetterWifi();
+            }
+        }, 0, timeToWait);
     }
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();\
+        timer.cancel();
     }
 
     private void moveToBetterWifi(){
