@@ -56,6 +56,7 @@ public class OptimizationService extends Service {
     }
 
     private void moveToBetterWifi(){
+        wifiController.startScan();
         List<ScanResult> wifisAvailable = wifiController.getScanResults();
         String bestWifi = null;
         int currntWifiLevel = wifiController.getConnectionInfo().getRssi();
