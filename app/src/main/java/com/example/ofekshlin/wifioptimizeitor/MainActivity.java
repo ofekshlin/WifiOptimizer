@@ -16,20 +16,25 @@ import android.view.Menu;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 
+import com.example.ofekshlin.wifioptimizeitor.Logs.ILogger;
+import com.example.ofekshlin.wifioptimizeitor.Logs.LoggerFactory;
+
 public class MainActivity extends AppCompatActivity {
 
     private WifiManager wifiController;
-
     private AvailableWifiNetworks mAdapter;
     private RecyclerView mWifiList;
-
     private Switch optimizeSwitch;
+    private ILogger logger;
+    private String tag = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        logger = LoggerFactory.getLogger();
 
         askForGPSPermission();
         turnOnGPS();
@@ -84,11 +89,13 @@ public class MainActivity extends AppCompatActivity {
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
         if (!manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+            logger.Info(tag, "Open GPS settings page");
             startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
         }
     }
 
     private void askForGPSPermission() {
+        logger.Info(tag, "Asking for GPS permission");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             if(checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)

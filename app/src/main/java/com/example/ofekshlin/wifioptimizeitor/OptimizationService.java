@@ -13,6 +13,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.ofekshlin.wifioptimizeitor.Logs.ILogger;
+import com.example.ofekshlin.wifioptimizeitor.Logs.LoggerFactory;
+
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -23,6 +26,8 @@ public class OptimizationService extends Service {
     private WifiManager wifiController;
     private long timeToWait;
     private Timer timer;
+    private ILogger logger;
+    private String tag = "OptimizationService";
 
     @Nullable
     @Override
@@ -34,12 +39,14 @@ public class OptimizationService extends Service {
     public void onCreate() {
         super.onCreate();
         timer = new Timer();
+        logger = LoggerFactory.getLogger();
         wifiController = (WifiManager) getSystemService(Context.WIFI_SERVICE);
         timeToWait = Integer.parseInt(this.getResources().getString(R.string.WifiCheckInterval));
     }
 
     @Override
     public void onStart(Intent intent, int startid) {
+        logger.Info(tag, "Starting service");
         Toast.makeText(this, "Service Started", Toast.LENGTH_LONG).show();
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -51,6 +58,7 @@ public class OptimizationService extends Service {
 
     @Override
     public void onDestroy() {
+        logger.Info(tag, "Stopping service");
         Toast.makeText(this, "Service Stopped", Toast.LENGTH_LONG).show();
         timer.cancel();
     }
@@ -63,6 +71,7 @@ public class OptimizationService extends Service {
         for(ScanResult net : wifisAvailable)
         {
             if(net.level > currntWifiLevel && networkInConfiguredNetworks(net.SSID)){
+                logger.Info(tag, "Found better wifi: " + net.SSID);
                 currntWifiLevel = net.level;
                 bestWifi = net.SSID;
             }
@@ -70,6 +79,7 @@ public class OptimizationService extends Service {
 
         if (bestWifi != null) {
             wifiController.enableNetwork(getWifiIdBySSID(bestWifi), true);
+            logger.Info(tag, "Moving to better wifi: " + bestWifi);
         }
 
     }
